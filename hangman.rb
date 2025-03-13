@@ -7,6 +7,7 @@ class Hangman
     @secret_word = ""
     @correct_length_words = []
     $word_place_holder = [] # may end up as a string
+    $incorrect_guesses_array = [] 
   end
 
   def select_desired_words
@@ -34,17 +35,25 @@ class Hangman
   def guess_a_letter
     letter_index = 0
     puts "guess a letter"
-    letter_guess = gets.chomp
-    if @secret_word.include?(letter_guess)
+    $letter_guess = gets.chomp
+    if @secret_word.include?($letter_guess)
       $secret_word_array_version.each_with_index do |letter, index|
-        if letter == letter_guess
+        if letter == $letter_guess
           letter_index = index
           $word_place_holder[letter_index] = letter
         end
       end
-    end
-    puts $word_place_holder.join(" ")
+    else 
+      route_incorrect_guess 
+    end 
+    puts $word_place_holder.join(" ") 
   end
+
+  def route_incorrect_guess
+    $incorrect_guesses_array << $letter_guess 
+    puts "#{$letter_guess} is an incorrect guess"
+    puts "The list of incorrect letters so far is: #{$incorrect_guesses_array}" 
+  end 
 
   def begin_game
     select_desired_words
