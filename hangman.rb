@@ -6,9 +6,8 @@ class Hangman
     @dictionary = dictionary
     @secret_word = ""
     @correct_length_words = []
-    select_desired_words
-    generate_secret_word # Call this method to generate the secret word on initialization
   end
+  $word_place_holder = [] # may end up as a string 
 
   def select_desired_words
     @dictionary.each do |word|
@@ -25,10 +24,20 @@ class Hangman
     puts @secret_word
   end
 
-  def display_correct_length_words
-    puts @correct_length_words
-  end
+  def generate_placeholder
+    letter_number = @secret_word.length 
+    $word_place_holder = Array.new(letter_number, "_") 
+    puts $word_place_holder.join(" ")
+  end 
+
+  def begin_game
+    select_desired_words
+    generate_secret_word 
+    generate_placeholder 
+  end 
+
 end
 
 # Create a new instance of Hangman with the dictionary
 game = Hangman.new(dictionary)
+game.begin_game 
