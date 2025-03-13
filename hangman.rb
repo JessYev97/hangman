@@ -6,8 +6,8 @@ class Hangman
     @dictionary = dictionary
     @secret_word = ""
     @correct_length_words = []
+    $word_place_holder = [] # may end up as a string
   end
-  $word_place_holder = [] # may end up as a string 
 
   def select_desired_words
     @dictionary.each do |word|
@@ -15,29 +15,45 @@ class Hangman
         @correct_length_words << word
       end
     end
-  end 
+  end
 
   def generate_secret_word
     $dictionary_length = @correct_length_words.length
     index_position = rand($dictionary_length)
     @secret_word = @correct_length_words[index_position]
+    $secret_word_array_version = @secret_word.chars # Assign here after @secret_word is set
     puts @secret_word
   end
 
   def generate_placeholder
-    letter_number = @secret_word.length 
-    $word_place_holder = Array.new(letter_number, "_") 
+    letter_number = @secret_word.length
+    $word_place_holder = Array.new(letter_number, "_")
     puts $word_place_holder.join(" ")
-  end 
+  end
+
+  def guess_a_letter
+    letter_index = 0
+    puts "guess a letter"
+    letter_guess = gets.chomp
+    if @secret_word.include?(letter_guess)
+      $secret_word_array_version.each_with_index do |letter, index|
+        if letter == letter_guess
+          letter_index = index
+          $word_place_holder[letter_index] = letter
+        end
+      end
+    end
+    puts $word_place_holder.join(" ")
+  end
 
   def begin_game
     select_desired_words
-    generate_secret_word 
-    generate_placeholder 
-  end 
-
+    generate_secret_word
+    generate_placeholder
+    guess_a_letter
+  end
 end
 
 # Create a new instance of Hangman with the dictionary
 game = Hangman.new(dictionary)
-game.begin_game 
+game.begin_game
